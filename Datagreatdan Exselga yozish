@@ -1,0 +1,35 @@
+private void button2_Click(object sender, EventArgs e)
+{
+    // DataGridView-dagi barcha ma'lumotlarni tanlash
+    dataGridView1.SelectAll();
+
+    // Clipboard-ga ma'lumotlarni olish
+    DataObject copydata = dataGridView1.GetClipboardContent();
+    if (copydata != null)
+    {
+        Clipboard.SetDataObject(copydata);
+    }
+
+    // Excel ilovasini yaratish
+    Microsoft.Office.Interop.Excel.Application xlapp = new Microsoft.Office.Interop.Excel.Application();
+    xlapp.Visible = true;
+    Microsoft.Office.Interop.Excel.Workbook xlWorkbook = xlapp.Workbooks.Add(System.Reflection.Missing.Value);
+    Microsoft.Office.Interop.Excel.Worksheet xlsheet = (Microsoft.Office.Interop.Excel.Worksheet)xlWorkbook.Sheets[1];
+
+    // Ustun sarlavhalarini yozish
+    for (int i = 0; i < dataGridView1.Columns.Count; i++)
+    {
+        xlsheet.Cells[1, i + 1+1] = dataGridView1.Columns[i].HeaderText;
+    }
+
+    // Ma'lumotlarni Clipboard orqali qo'shish
+    Microsoft.Office.Interop.Excel.Range xlr = (Microsoft.Office.Interop.Excel.Range)xlsheet.Cells[2, 1];
+    xlr.Select();
+    xlsheet.PasteSpecial(xlr, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
+
+    // Clipboard-ni tozalash
+    Clipboard.Clear();
+
+
+
+}
