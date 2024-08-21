@@ -1,0 +1,23 @@
+  private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+  {
+      TextBox textBox = sender as TextBox;
+
+      // Agar raqam, '.' yoki ',' belgilari, yoki 'Backspace' kiritilgan bo'lsa, ruxsat beriladi
+      if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
+          e.KeyChar != '.' && e.KeyChar != ',' && e.KeyChar != '-')
+      {
+          e.Handled = true;
+      }
+
+      // Faqat bir dona '.' yoki ',' belgisi bo'lishi mumkin
+      if ((e.KeyChar == '.' || e.KeyChar == ',') && (textBox.Text.Contains('.') || textBox.Text.Contains(',')))
+      {
+          e.Handled = true;
+      }
+
+      // Manfiy belgi faqat matnning boshida bo'lishi mumkin
+      if (e.KeyChar == '-' && textBox.SelectionStart != 0)
+      {
+          e.Handled = true;
+      }
+  }
